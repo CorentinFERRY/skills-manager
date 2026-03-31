@@ -40,15 +40,31 @@ uv --version
 Depuis la racine du repo:
 
 ```bash
-uv sync --dev
+uv add fastapi                           
+uv add --dev pytest pytest-cov mypy ruff 
 ```
-
-Cette commande cree/met a jour l'environnement virtuel et installe:
+Cette commande installe:
 
 - dependances applicatives (ex: `fastapi`)
 - dependances de developpement (pytest, ruff, mypy, etc.)
 
-## 5 Verifier que tout est OK
+## 5 Configuration ruff & pytest
+
+```TOML
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src/skills-manager"]
+testpaths = ["tests"]
+addopts = "--cov=. --cov-fail-under=80"
+```
+
+
+## 6 Verifier que tout est OK
 
 Lancer les tests:
 
@@ -62,7 +78,7 @@ Lancer le script principal:
 uv run python src/skills-manager/main.py
 ```
 
-## 6 Importer les File Watchers (PyCharm)
+## 7 Importer les File Watchers (PyCharm)
 
 ```
 Settings -> Tools -> File Watchers -> import -> watchers.xml
