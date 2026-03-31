@@ -1,10 +1,10 @@
-from xml.etree.ElementTree import tostring
-
 from domain.User import User
 
+
 def main():
-    testUser = User(1,"Corentin")
-    print(testUser)
+    test_user = User(1, "Corentin")
+    print(test_user)
+
 
 if __name__ == "__main__":
     main()
