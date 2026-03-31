@@ -58,9 +58,12 @@ line-length = 88
 select = ["E", "F", "I"]
 
 [tool.pytest.ini_options]
-pythonpath = ["src/skills-manager"]
+pythonpath = ["src/"]
 testpaths = ["tests"]
 addopts = "--cov=. --cov-fail-under=80"
+
+[tool.mypy]
+strict = true
 ```
 
 
