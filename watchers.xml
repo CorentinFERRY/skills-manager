@@ -1,6 +1,6 @@
 <TaskOptions>
   <TaskOptions>
-    <option name="arguments" value="check $FilePath$" />
+    <option name="arguments" value="check --fix $FilePath$" />
     <option name="checkSyntaxErrors" value="false" />
     <option name="description" />
     <option name="exitCodeBehavior" value="ALWAYS" />
