@@ -7,4 +7,4 @@ class Validation:
     learner_id: int
     skill_id: int
     status: str
-    pre_validated_by: str
+    pre_validated_by: str | None = None
