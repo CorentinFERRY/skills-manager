@@ -4,9 +4,9 @@ Ce guide couvre uniquement la remise a zero de l'environnement local a partir du
 
 ## 1 Prerequis
 
-- Git installe
+- Git 
 - Python 3.12+
-- `uv` installe
+- Package manager `uv` installé
 
 ## 2 Cloner le projet
 
