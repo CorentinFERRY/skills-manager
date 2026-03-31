@@ -1,8 +1,8 @@
-from domain.Validation import Validation
+from skills_manager.domain.Validation import Validation
 
 
 class TestValidation:
-    def test_creation(self):
+    def test_creation(self) -> None:
         v = Validation(
             id=1,
             learner_id=5,
@@ -16,7 +16,7 @@ class TestValidation:
         assert v.status == "pending"
         assert v.pre_validated_by == "trainer_A"
 
-    def test_is_dataclass_equality(self):
+    def test_is_dataclass_equality(self) -> None:
         v1 = Validation(
             id=1,
             learner_id=5,
@@ -33,7 +33,7 @@ class TestValidation:
         )
         assert v1 == v2
 
-    def test_different_status_not_equal(self):
+    def test_different_status_not_equal(self) -> None:
         v1 = Validation(
             id=1,
             learner_id=5,
@@ -50,7 +50,7 @@ class TestValidation:
         )
         assert v1 != v2
 
-    def test_repr_contains_fields(self):
+    def test_repr_contains_fields(self) -> None:
         v = Validation(
             id=1,
             learner_id=5,

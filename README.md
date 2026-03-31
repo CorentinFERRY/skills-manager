@@ -12,7 +12,7 @@ Ce guide couvre uniquement la remise a zero de l'environnement local a partir du
 
 ```bash
 git clone https://github.com/CorentinFERRY/skills-manager.git
-cd skills-manager
+cd skills_manager
 ```
 
 ## 3 Installer `uv`
@@ -75,7 +75,7 @@ uv run pytest
 Lancer le script principal:
 
 ```bash
-uv run python src/skills-manager/main.py
+uv run python src/skills_manager/main.py
 ```
 
 ## 7 Importer les File Watchers (PyCharm)

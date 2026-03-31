@@ -1,11 +1,11 @@
-from domain.Learner import Learner
-from domain.Promotion import Promotion
-from domain.Skill import Skill
-from domain.Trainer import Trainer
-from domain.Validation import Validation
+from .domain.Learner import Learner
+from .domain.Promotion import Promotion
+from .domain.Skill import Skill
+from .domain.Trainer import Trainer
+from .domain.Validation import Validation
 
 
-def main():
+def main() -> None:
     test_user1 = Learner(1, "Corentin")
     print(test_user1)
     test_user2 = Trainer(2, "Paul")
