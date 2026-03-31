@@ -1,6 +1,6 @@
 from typing import List
 
-from domain.User import User
+from .User import User
 
 
 class Promotion:

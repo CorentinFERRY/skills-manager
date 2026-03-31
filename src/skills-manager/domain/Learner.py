@@ -1,4 +1,4 @@
-from domain.User import User
+from .User import User
 
 
 class Learner(User):
