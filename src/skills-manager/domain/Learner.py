@@ -6,10 +6,13 @@ class Learner(User):
         super().__init__(id, name)
         self.__validated_skills: list[int] = []
 
-    def add_skill(self, skill_id: int) -> None:
+    def add_validated_skill(self, skill_id: int) -> None:
         if skill_id in self.__validated_skills:
             raise ValueError("Compétence déja validée")
         self.__validated_skills.append(skill_id)
 
     def can_validate(self, skill_id: int) -> bool:
         return skill_id in self.__validated_skills
+
+    def __str__(self) -> str:
+        return f"Learner(id={self.id}, name={self.name})"
