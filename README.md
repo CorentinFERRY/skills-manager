@@ -48,7 +48,7 @@ Cette commande installe:
 - dependances applicatives (ex: `fastapi`)
 - dependances de developpement (pytest, ruff, mypy, etc.)
 
-## 5 Configuration ruff & pytest
+## 5 Configuration ruff, pytest & mypy
 
 ```TOML
 [tool.ruff]
