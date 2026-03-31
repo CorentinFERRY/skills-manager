@@ -12,3 +12,5 @@ wheels/
 /pyproject.toml
 
 /uv.lock
+/tests/.coverage
+/.coverage
