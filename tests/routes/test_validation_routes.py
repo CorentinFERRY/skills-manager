@@ -1,11 +1,20 @@
+from httpx import AsyncClient
+
 import skills_manager.database.memory as db
 from skills_manager.models.Learner import Learner
+from skills_manager.schemas.validation_schema import (
+    PreValidationCreate,
+    ValidationCreate,
+)
 
 
 class TestCreateValidation:
     async def test_create_validation_returns_201(
-        self, client, validation_payload, trainer_headers
-    ):
+        self,
+        client: AsyncClient,
+        validation_payload: ValidationCreate,
+        trainer_headers: dict[str, str],
+    ) -> None:
         response = await client.post(
             "/validations",
             json=validation_payload.model_dump(),
@@ -14,8 +23,11 @@ class TestCreateValidation:
         assert response.status_code == 201
 
     async def test_create_validation_returns_correct_data(
-        self, client, validation_payload, trainer_headers
-    ):
+        self,
+        client: AsyncClient,
+        validation_payload: ValidationCreate,
+        trainer_headers: dict[str, str],
+    ) -> None:
         response = await client.post(
             "/validations",
             json=validation_payload.model_dump(),
@@ -27,16 +39,19 @@ class TestCreateValidation:
         assert data["status"] == "validated"
 
     async def test_create_validation_without_role_returns_422(
-        self, client, validation_payload
-    ):
+        self, client: AsyncClient, validation_payload: ValidationCreate
+    ) -> None:
         response = await client.post(
             "/validations", json=validation_payload.model_dump()
         )
         assert response.status_code == 422
 
     async def test_create_validation_with_learner_role_returns_403(
-        self, client, validation_payload, learner_headers
-    ):
+        self,
+        client: AsyncClient,
+        validation_payload: ValidationCreate,
+        learner_headers: dict[str, str],
+    ) -> None:
         response = await client.post(
             "/validations",
             json=validation_payload.model_dump(),
@@ -47,8 +62,11 @@ class TestCreateValidation:
 
 class TestCreatePreValidation:
     async def test_create_pre_validation_returns_201(
-        self, client, pre_validation_payload, learner_headers
-    ):
+        self,
+        client: AsyncClient,
+        pre_validation_payload: PreValidationCreate,
+        learner_headers: dict[str, str],
+    ) -> None:
         # setup : validator avec la compétence
         validator = Learner(id=2, name="Bob")
         validator.add_validated_skill(1)
@@ -62,8 +80,11 @@ class TestCreatePreValidation:
         assert response.status_code == 201
 
     async def test_create_pre_validation_returns_correct_status(
-        self, client, pre_validation_payload, learner_headers
-    ):
+        self,
+        client: AsyncClient,
+        pre_validation_payload: PreValidationCreate,
+        learner_headers: dict[str, str],
+    ) -> None:
         validator = Learner(id=2, name="Bob")
         validator.add_validated_skill(1)
         db.learners.append(validator)
@@ -77,16 +98,19 @@ class TestCreatePreValidation:
         assert response.json()["pre_validated_by"] == "Bob"
 
     async def test_create_pre_validation_without_role_returns_422(
-        self, client, pre_validation_payload
-    ):
+        self, client: AsyncClient, pre_validation_payload: PreValidationCreate
+    ) -> None:
         response = await client.post(
             "/pre-validations", json=pre_validation_payload.model_dump()
         )
         assert response.status_code == 422
 
     async def test_create_pre_validation_with_trainer_role_returns_403(
-        self, client, pre_validation_payload, trainer_headers
-    ):
+        self,
+        client: AsyncClient,
+        pre_validation_payload: PreValidationCreate,
+        trainer_headers: dict[str, str],
+    ) -> None:
         response = await client.post(
             "/pre-validations",
             json=pre_validation_payload.model_dump(),
@@ -95,8 +119,11 @@ class TestCreatePreValidation:
         assert response.status_code == 403
 
     async def test_create_pre_validation_validator_not_found_returns_403(
-        self, client, pre_validation_payload, learner_headers
-    ):
+        self,
+        client: AsyncClient,
+        pre_validation_payload: PreValidationCreate,
+        learner_headers: dict[str, str],
+    ) -> None:
         # DB vide → validator_id=2 n'existe pas
         response = await client.post(
             "/pre-validations",
@@ -106,8 +133,11 @@ class TestCreatePreValidation:
         assert response.status_code == 403
 
     async def test_create_pre_validation_validator_missing_skill_returns_403(
-        self, client, pre_validation_payload, learner_headers
-    ):
+        self,
+        client: AsyncClient,
+        pre_validation_payload: PreValidationCreate,
+        learner_headers: dict[str, str],
+    ) -> None:
         # validator existe mais n'a pas la compétence
         validator = Learner(id=2, name="Bob")
         db.learners.append(validator)

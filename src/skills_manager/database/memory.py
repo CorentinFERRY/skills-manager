@@ -1,8 +1,14 @@
-learners = []
-current_learner_id = 1
+from typing import List
 
-skills = []
-current_skill_id = 1
+from skills_manager.models.Learner import Learner
+from skills_manager.models.Skill import Skill
+from skills_manager.models.Validation import Validation
 
-validations = []
-current_validation_id = 1
+learners: List[Learner] = []
+current_learner_id: int = 1
+
+skills: List[Skill] = []
+current_skill_id: int = 1
+
+validations: List[Validation] = []
+current_validation_id: int = 1

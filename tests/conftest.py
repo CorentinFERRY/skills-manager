@@ -1,4 +1,4 @@
-from typing import Any, AsyncGenerator
+from typing import Any, AsyncGenerator, Generator
 
 import pytest
 from httpx import ASGITransport, AsyncClient
@@ -15,7 +15,7 @@ from skills_manager.schemas.validation_schema import (
 
 # --- Réinitialisation de la DB entre chaque test ---
 @pytest.fixture(autouse=True)
-def reset_db():
+def reset_db() -> Generator[None, None, None]:
     db.learners.clear()
     db.skills.clear()
     db.validations.clear()
@@ -35,12 +35,12 @@ async def client() -> AsyncGenerator[AsyncClient, Any]:
 
 # --- Headers ---
 @pytest.fixture
-def trainer_headers() -> dict:
+def trainer_headers() -> dict[str, str]:
     return {"x-role": "trainer"}  # Pour les routes réservées aux formateurs
 
 
 @pytest.fixture
-def learner_headers() -> dict:
+def learner_headers() -> dict[str, str]:
     return {"x-role": "learner"}  # Pour les routes réservées aux apprenants
 
 
