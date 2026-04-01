@@ -1,8 +1,8 @@
-from .domain.Learner import Learner
-from .domain.Promotion import Promotion
-from .domain.Skill import Skill
-from .domain.Trainer import Trainer
-from .domain.Validation import Validation
+from .models.Learner import Learner
+from .models.Promotion import Promotion
+from .models.Skill import Skill
+from .models.Trainer import Trainer
+from .models.Validation import Validation
 
 
 def main() -> None:

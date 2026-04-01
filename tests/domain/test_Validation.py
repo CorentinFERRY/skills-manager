@@ -1,4 +1,4 @@
-from skills_manager.domain.Validation import Validation
+from skills_manager.models.Validation import Validation
 
 
 class TestValidation:

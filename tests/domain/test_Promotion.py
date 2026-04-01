@@ -1,9 +1,9 @@
 import pytest
 
-from skills_manager.domain.Learner import Learner
-from skills_manager.domain.Promotion import Promotion
-from skills_manager.domain.Trainer import Trainer
-from skills_manager.domain.User import User
+from skills_manager.models.Learner import Learner
+from skills_manager.models.Promotion import Promotion
+from skills_manager.models.Trainer import Trainer
+from skills_manager.models.User import User
 
 
 class TestPromotion:

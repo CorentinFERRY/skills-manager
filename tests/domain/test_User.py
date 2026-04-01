@@ -1,4 +1,4 @@
-from skills_manager.domain.User import User
+from skills_manager.models.User import User
 
 
 class TestUser:
