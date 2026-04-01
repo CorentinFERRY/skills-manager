@@ -1,8 +1,15 @@
-from .models.Learner import Learner
-from .models.Promotion import Promotion
-from .models.Skill import Skill
-from .models.Trainer import Trainer
-from .models.Validation import Validation
+from fastapi import FastAPI
+
+from skills_manager.models.Learner import Learner
+from skills_manager.models.Promotion import Promotion
+from skills_manager.models.Skill import Skill
+from skills_manager.models.Trainer import Trainer
+from skills_manager.models.Validation import Validation
+from skills_manager.routes.main_router import main_router
+
+app = FastAPI()
+
+app.include_router(main_router)
 
 
 def main() -> None:
