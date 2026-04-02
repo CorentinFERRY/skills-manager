@@ -20,3 +20,12 @@ def create_learner(name: str) -> Learner:
     memory.current_learner_id += 1
     memory.learners.append(new_learner)
     return new_learner
+
+
+def update_learner(learner_id: int, updated_learner: Learner) -> Learner | None:
+    for i, learner in enumerate(memory.learners):
+        if learner.id == learner_id:
+            updated_learner.id = learner_id
+            memory.learners[i] = updated_learner
+            return updated_learner
+    return None
