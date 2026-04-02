@@ -26,7 +26,7 @@ def create_pre_validation(
         learner_id=learner_id,
         skill_id=skill_id,
         status="pre_validated",
-        pre_validated_by=validator.name,
+        pre_validated_by=validator_id,
     )
     memory.current_validation_id += 1
     memory.validations.append(new_validation)
