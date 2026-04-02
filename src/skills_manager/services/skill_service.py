@@ -2,6 +2,7 @@ from typing import List
 
 import skills_manager.database.memory as memory
 from skills_manager.models.Skill import Skill
+from skills_manager.schemas.skill_schema import SkillCreate
 
 
 def get_all_skills() -> List[Skill]:
@@ -22,12 +23,11 @@ def create_skill(name: str) -> Skill:
     return new_skill
 
 
-def update_skill(skill_id: int, updated_skill: Skill) -> Skill | None:
+def update_skill(skill_id: int, data: SkillCreate) -> Skill | None:
     for i, skill in enumerate(memory.skills):
         if skill.id == skill_id:
-            updated_skill.id = skill_id
-            memory.skills[i] = updated_skill
-            return updated_skill
+            skill.name = data.name
+            return skill
     return None
 
 
