@@ -2,6 +2,7 @@ from typing import List
 
 import skills_manager.database.memory as memory
 from skills_manager.models.Learner import Learner
+from skills_manager.schemas.learner_schema import LearnerCreate
 
 
 def get_all_learners() -> List[Learner]:
@@ -22,12 +23,11 @@ def create_learner(name: str) -> Learner:
     return new_learner
 
 
-def update_learner(learner_id: int, updated_learner: Learner) -> Learner | None:
+def update_learner(learner_id: int, data: LearnerCreate) -> Learner | None:
     for i, learner in enumerate(memory.learners):
         if learner.id == learner_id:
-            updated_learner.id = learner_id
-            memory.learners[i] = updated_learner
-            return updated_learner
+            learner.name = data.name
+            return learner
     return None
 
 
