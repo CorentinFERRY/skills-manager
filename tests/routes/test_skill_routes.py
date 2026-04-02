@@ -1,3 +1,5 @@
+from typing import Any
+
 from httpx import AsyncClient
 
 from src.schemas.skill_schema import SkillCreate
@@ -15,43 +17,25 @@ class TestGetSkills:
         assert response.json() == []
 
     async def test_get_skills_returns_list_after_creation(
-        self,
-        client: AsyncClient,
-        skill_payload: SkillCreate,
-        trainer_headers: dict[str, str],
+        self, client: AsyncClient, created_skill: dict[str, Any]
     ) -> None:
-        await client.post(
-            "/competences", json=skill_payload.model_dump(), headers=trainer_headers
-        )
         response = await client.get("/competences")
         assert len(response.json()) == 1
 
 
 class TestGetSkillById:
     async def test_get_skill_by_id_returns_200(
-        self,
-        client: AsyncClient,
-        skill_payload: SkillCreate,
-        trainer_headers: dict[str, str],
+        self, client: AsyncClient, created_skill: dict[str, Any]
     ) -> None:
-        await client.post(
-            "/competences", json=skill_payload.model_dump(), headers=trainer_headers
-        )
-        response = await client.get("/competences/1")
+        response = await client.get(f"/competences/{created_skill['id']}")
         assert response.status_code == 200
 
     async def test_get_skill_by_id_returns_correct_data(
-        self,
-        client: AsyncClient,
-        skill_payload: SkillCreate,
-        trainer_headers: dict[str, str],
+        self, client: AsyncClient, created_skill: dict[str, Any]
     ) -> None:
-        await client.post(
-            "/competences", json=skill_payload.model_dump(), headers=trainer_headers
-        )
-        response = await client.get("/competences/1")
-        assert response.json()["id"] == 1
-        assert response.json()["name"] == skill_payload.name
+        response = await client.get(f"/competences/{created_skill['id']}")
+        assert response.json()["id"] == created_skill["id"]
+        assert response.json()["name"] == created_skill["name"]
 
     async def test_get_skill_by_id_returns_404_if_not_found(
         self,
@@ -117,56 +101,50 @@ class TestUpdateSkill:
     async def test_update_skill_returns_200(
         self,
         client: AsyncClient,
-        skill_payload: SkillCreate,
+        created_skill: dict[str, Any],
         trainer_headers: dict[str, str],
     ) -> None:
-        await client.post(
-            "/competences", json=skill_payload.model_dump(), headers=trainer_headers
-        )
         response = await client.put(
-            "/competences/1", json={"name": "Updated Skill"}, headers=trainer_headers
+            f"/competences/{created_skill['id']}",
+            json={"name": "Updated Skill"},
+            headers=trainer_headers,
         )
         assert response.status_code == 200
 
     async def test_update_skill_returns_correct_data(
         self,
         client: AsyncClient,
-        skill_payload: SkillCreate,
+        created_skill: dict[str, Any],
         trainer_headers: dict[str, str],
     ) -> None:
-        await client.post(
-            "/competences", json=skill_payload.model_dump(), headers=trainer_headers
-        )
         response = await client.put(
-            "/competences/1", json={"name": "Updated Skill"}, headers=trainer_headers
+            f"/competences/{created_skill['id']}",
+            json={"name": "Updated Skill"},
+            headers=trainer_headers,
         )
         assert response.json()["name"] == "Updated Skill"
-        assert response.json()["id"] == 1
+        assert response.json()["id"] == created_skill["id"]
 
     async def test_update_skill_without_role_returns_422(
         self,
         client: AsyncClient,
-        skill_payload: SkillCreate,
-        trainer_headers: dict[str, str],
+        created_skill: dict[str, Any],
     ) -> None:
-        await client.post(
-            "/competences", json=skill_payload.model_dump(), headers=trainer_headers
+        response = await client.put(
+            f"/competences/{created_skill['id']}", json={"name": "Updated Skill"}
         )
-        response = await client.put("/competences/1", json={"name": "Updated Skill"})
         assert response.status_code == 422
 
     async def test_update_skill_with_learner_role_returns_403(
         self,
         client: AsyncClient,
-        skill_payload: SkillCreate,
-        trainer_headers: dict[str, str],
+        created_skill: dict[str, Any],
         learner_headers: dict[str, str],
     ) -> None:
-        await client.post(
-            "/competences", json=skill_payload.model_dump(), headers=trainer_headers
-        )
         response = await client.put(
-            "/competences/1", json={"name": "Updated Skill"}, headers=learner_headers
+            f"/competences/{created_skill['id']}",
+            json={"name": "Updated Skill"},
+            headers=learner_headers,
         )
         assert response.status_code == 403
 
@@ -185,51 +163,43 @@ class TestDeleteSkill:
     async def test_delete_skill_returns_204(
         self,
         client: AsyncClient,
-        skill_payload: SkillCreate,
+        created_skill: dict[str, Any],
         trainer_headers: dict[str, str],
     ) -> None:
-        await client.post(
-            "/competences", json=skill_payload.model_dump(), headers=trainer_headers
+        response = await client.delete(
+            f"/competences/{created_skill['id']}", headers=trainer_headers
         )
-        response = await client.delete("/competences/1", headers=trainer_headers)
         assert response.status_code == 204
 
     async def test_delete_skill_removes_from_db(
         self,
         client: AsyncClient,
-        skill_payload: SkillCreate,
+        created_skill: dict[str, Any],
         trainer_headers: dict[str, str],
     ) -> None:
-        await client.post(
-            "/competences", json=skill_payload.model_dump(), headers=trainer_headers
+        await client.delete(
+            f"/competences/{created_skill['id']}", headers=trainer_headers
         )
-        await client.delete("/competences/1", headers=trainer_headers)
         response = await client.get("/competences/1")
         assert response.status_code == 404
 
     async def test_delete_skill_without_role_returns_422(
         self,
         client: AsyncClient,
-        skill_payload: SkillCreate,
-        trainer_headers: dict[str, str],
+        created_skill: dict[str, Any],
     ) -> None:
-        await client.post(
-            "/competences", json=skill_payload.model_dump(), headers=trainer_headers
-        )
-        response = await client.delete("/competences/1")
+        response = await client.delete(f"/competences/{created_skill['id']}")
         assert response.status_code == 422
 
     async def test_delete_skill_with_learner_role_returns_403(
         self,
         client: AsyncClient,
-        skill_payload: SkillCreate,
-        trainer_headers: dict[str, str],
+        created_skill: dict[str, Any],
         learner_headers: dict[str, str],
     ) -> None:
-        await client.post(
-            "/competences", json=skill_payload.model_dump(), headers=trainer_headers
+        response = await client.delete(
+            f"/competences/{created_skill['id']}", headers=learner_headers
         )
-        response = await client.delete("/competences/1", headers=learner_headers)
         assert response.status_code == 403
 
     async def test_delete_skill_returns_404_if_not_found(

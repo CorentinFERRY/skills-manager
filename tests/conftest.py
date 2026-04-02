@@ -5,7 +5,6 @@ from httpx import ASGITransport, AsyncClient
 
 from src.database import memory as db
 from src.main import app
-from src.models.Learner import Learner
 from src.schemas.learner_schema import LearnerCreate
 from src.schemas.skill_schema import SkillCreate
 from src.schemas.trainer_schema import TrainerCreate
@@ -113,32 +112,33 @@ async def created_skill(
     return response.json()
 
 
-@pytest.fixture
-async def created_validation(
-    client: AsyncClient,
-    validation_payload: ValidationCreate,
-    trainer_headers: dict[str, str],
-) -> dict[str, Any]:
-    response = await client.post(
-        "/validations", json=validation_payload.model_dump(), headers=trainer_headers
-    )
-    return response.json()
-
-
-@pytest.fixture
-async def created_pre_validation(
-    client: AsyncClient,
-    pre_validation_payload: PreValidationCreate,
-    learner_headers: dict[str, str],
-) -> dict[str, Any]:
-    # setup obligatoire — le validator doit exister et avoir la compétence
-    validator = Learner(id=2, name="Bob")
-    validator.add_validated_skill(1)
-    db.learners.append(validator)
-
-    response = await client.post(
-        "/pre-validations",
-        json=pre_validation_payload.model_dump(),
-        headers=learner_headers,
-    )
-    return response.json()
+#
+# @pytest.fixture
+# async def created_validation(
+#     client: AsyncClient,
+#     validation_payload: ValidationCreate,
+#     trainer_headers: dict[str, str],
+# ) -> dict[str, Any]:
+#     response = await client.post(
+#         "/validations", json=validation_payload.model_dump(), headers=trainer_headers
+#     )
+#     return response.json()
+#
+#
+# @pytest.fixture
+# async def created_pre_validation(
+#     client: AsyncClient,
+#     pre_validation_payload: PreValidationCreate,
+#     learner_headers: dict[str, str],
+# ) -> dict[str, Any]:
+#     # setup obligatoire — le validator doit exister et avoir la compétence
+#     validator = Learner(id=2, name="Bob")
+#     validator.add_validated_skill(1)
+#     db.learners.append(validator)
+#
+#     response = await client.post(
+#         "/pre-validations",
+#         json=pre_validation_payload.model_dump(),
+#         headers=learner_headers,
+#     )
+#     return response.json()
