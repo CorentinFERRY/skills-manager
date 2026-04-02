@@ -29,3 +29,10 @@ def update_skill(skill_id: int, updated_skill: Skill) -> Skill | None:
             memory.skills[i] = updated_skill
             return updated_skill
     return None
+
+
+def delete_skill(skill_id: int) -> Skill | None:
+    for i, skill in enumerate(memory.skills):
+        if skill.id == skill_id:
+            return memory.skills.pop(i)
+    return None
