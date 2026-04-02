@@ -1,6 +1,6 @@
-from skills_manager.database import memory
-from skills_manager.models.Validation import Validation
-from skills_manager.services.learner_service import get_learner_by_id
+from src.database import memory
+from src.models.Validation import Validation
+from src.services.learner_service import get_learner_by_id
 
 
 def create_validation(learner_id: int, skill_id: int) -> Validation:

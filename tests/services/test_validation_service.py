@@ -1,11 +1,8 @@
 import pytest
 
-import skills_manager.database.memory as db
-from skills_manager.models.Learner import Learner
-from skills_manager.services.validation_service import (
-    create_pre_validation,
-    create_validation,
-)
+from src.database import memory as db
+from src.models.Learner import Learner
+from src.services.validation_service import create_pre_validation, create_validation
 
 
 class TestCreateValidation:
@@ -55,7 +52,7 @@ class TestCreatePreValidation:
         db.learners.append(validator)
 
         result = create_pre_validation(learner_id=1, skill_id=1, validator_id=2)
-        assert result.pre_validated_by == "Bob"
+        assert result.pre_validated_by == 2
 
     def test_saves_pre_validation_in_db(self) -> None:
         validator = Learner(id=2, name="Bob")

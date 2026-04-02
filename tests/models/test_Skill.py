@@ -1,4 +1,4 @@
-from skills_manager.models.Skill import Skill
+from src.models.Skill import Skill
 
 
 class TestSkill:

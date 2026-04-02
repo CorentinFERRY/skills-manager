@@ -1,5 +1,5 @@
-from skills_manager.models.Trainer import Trainer
-from skills_manager.models.User import User
+from src.models.Trainer import Trainer
+from src.models.User import User
 
 
 class TestTrainer:

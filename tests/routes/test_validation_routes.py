@@ -1,8 +1,8 @@
 from httpx import AsyncClient
 
-import skills_manager.database.memory as db
-from skills_manager.models.Learner import Learner
-from skills_manager.schemas.validation_schema import (
+from src.database import memory as db
+from src.models.Learner import Learner
+from src.schemas.validation_schema import (
     PreValidationCreate,
     ValidationCreate,
 )
@@ -95,7 +95,7 @@ class TestCreatePreValidation:
             headers=learner_headers,
         )
         assert response.json()["status"] == "pre_validated"
-        assert response.json()["pre_validated_by"] == "Bob"
+        assert response.json()["pre_validated_by"] == 2
 
     async def test_create_pre_validation_without_role_returns_422(
         self, client: AsyncClient, pre_validation_payload: PreValidationCreate

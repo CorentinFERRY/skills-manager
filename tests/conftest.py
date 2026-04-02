@@ -3,11 +3,11 @@ from typing import Any, AsyncGenerator, Generator
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-import skills_manager.database.memory as db
-from skills_manager.main import app
-from skills_manager.schemas.learner_schema import LearnerCreate
-from skills_manager.schemas.skill_schema import SkillCreate
-from skills_manager.schemas.validation_schema import (
+from src.database import memory as db
+from src.main import app
+from src.schemas.learner_schema import LearnerCreate
+from src.schemas.skill_schema import SkillCreate
+from src.schemas.validation_schema import (
     PreValidationCreate,
     ValidationCreate,
 )

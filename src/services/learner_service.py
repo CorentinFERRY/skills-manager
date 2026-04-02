@@ -1,8 +1,8 @@
 from typing import List
 
-import skills_manager.database.memory as memory
-from skills_manager.models.Learner import Learner
-from skills_manager.schemas.learner_schema import LearnerCreate
+import src.database.memory as memory
+from src.models.Learner import Learner
+from src.schemas.learner_schema import LearnerCreate
 
 
 def get_all_learners() -> List[Learner]:

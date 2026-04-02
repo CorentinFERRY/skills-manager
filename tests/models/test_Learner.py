@@ -1,7 +1,7 @@
 import pytest
 
-from skills_manager.models.Learner import Learner
-from skills_manager.models.User import User
+from src.models.Learner import Learner
+from src.models.User import User
 
 
 class TestLearner:

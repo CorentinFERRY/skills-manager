@@ -1,9 +1,9 @@
 import pytest
 
-from skills_manager.models.Learner import Learner
-from skills_manager.models.Promotion import Promotion
-from skills_manager.models.Trainer import Trainer
-from skills_manager.models.User import User
+from src.models.Learner import Learner
+from src.models.Promotion import Promotion
+from src.models.Trainer import Trainer
+from src.models.User import User
 
 
 class TestPromotion:
@@ -33,12 +33,12 @@ class TestPromotion:
     def test_add_non_user_raises_type_error(self) -> None:
         promo = Promotion()
         with pytest.raises(TypeError, match="User"):
-            promo.add_user("pas un user")  # type: ignore
+            promo.add_user("pas un user")  # type: ignore[arg-type]
 
     def test_add_non_user_integer_raises_type_error(self) -> None:
         promo = Promotion()
         with pytest.raises(TypeError):
-            promo.add_user(42)  # type: ignore
+            promo.add_user(42)  # type: ignore[arg-type]
 
     def test_add_multiple_users(self) -> None:
         promo = Promotion()
