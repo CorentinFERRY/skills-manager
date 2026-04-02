@@ -20,3 +20,12 @@ def create_skill(name: str) -> Skill:
     memory.current_skill_id += 1
     memory.skills.append(new_skill)
     return new_skill
+
+
+def update_skill(skill_id: int, updated_skill: Skill) -> Skill | None:
+    for i, skill in enumerate(memory.skills):
+        if skill.id == skill_id:
+            updated_skill.id = skill_id
+            memory.skills[i] = updated_skill
+            return updated_skill
+    return None
