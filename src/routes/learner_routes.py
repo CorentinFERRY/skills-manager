@@ -9,7 +9,7 @@ router = APIRouter()
 
 
 @router.get("/apprenants")
-def get_learners() -> List[LearnerResponse]:
+def get_all() -> List[LearnerResponse]:
     learners = learner_service.get_all_learners()
     return [LearnerResponse(id=learner.id, name=learner.name) for learner in learners]
 
