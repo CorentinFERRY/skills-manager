@@ -29,3 +29,10 @@ def update_learner(learner_id: int, updated_learner: Learner) -> Learner | None:
             memory.learners[i] = updated_learner
             return updated_learner
     return None
+
+
+def delete_learner(learner_id: int) -> Learner | None:
+    for i, learner in enumerate(memory.learners):
+        if learner.id == learner_id:
+            return memory.learners.pop(i)
+    return None
