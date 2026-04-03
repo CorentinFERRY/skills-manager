@@ -1,18 +1,16 @@
-from src.database import memory
 from src.models.Validation import Validation
+from src.repositories import validation_repository
 from src.services.learner_service import get_learner_by_id
 
 
 def create_validation(learner_id: int, skill_id: int) -> Validation:
-    new_validation = Validation(
-        id=memory.current_validation_id,
-        learner_id=learner_id,
-        skill_id=skill_id,
-        status="validated",
+    new_validation = validation_repository.insert_validation(learner_id, skill_id)
+    return Validation(
+        id=new_validation["id"],
+        learner_id=new_validation["learner_id"],
+        skill_id=new_validation["skill_id"],
+        status=new_validation["status"],
     )
-    memory.current_validation_id += 1
-    memory.validations.append(new_validation)
-    return new_validation
 
 
 def create_pre_validation(
@@ -21,13 +19,13 @@ def create_pre_validation(
     validator = get_learner_by_id(validator_id)
     if validator is None or not validator.can_validate(skill_id):
         raise ValueError("Le pair n'a pas cette compétence validée")
-    new_validation = Validation(
-        id=memory.current_validation_id,
-        learner_id=learner_id,
-        skill_id=skill_id,
-        status="pre_validated",
-        pre_validated_by=validator_id,
+    new_validation = validation_repository.insert_pre_validation(
+        learner_id, skill_id, validator_id
     )
-    memory.current_validation_id += 1
-    memory.validations.append(new_validation)
-    return new_validation
+    return Validation(
+        id=new_validation["id"],
+        learner_id=new_validation["learner_id"],
+        skill_id=new_validation["skill_id"],
+        status=new_validation["status"],
+        pre_validated_by=new_validation["pre_validated_by"],
+    )
