@@ -1,4 +1,4 @@
-# Reinitialiser le projet depuis le repo Git
+# Initialiser le projet depuis le repo Git
 
 Ce guide couvre uniquement la remise a zero de l'environnement local a partir du depot.
 
