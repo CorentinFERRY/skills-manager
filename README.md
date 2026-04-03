@@ -43,6 +43,7 @@ Depuis la racine du repo:
 uv add fastapi                           
 uv add --dev pytest pytest-cov mypy ruff 
 uv add pytest pytest-asyncio httpx
+uv add uvicorn
 ```
 Cette commande installe:
 

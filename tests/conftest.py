@@ -1,9 +1,10 @@
-from typing import Any, AsyncGenerator, Generator
+import sqlite3
+from typing import Any, AsyncGenerator
 
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from src.database import memory as db
+from src.database.database import init_db, set_connection
 from src.main import app
 from src.schemas.learner_schema import LearnerCreate
 from src.schemas.skill_schema import SkillCreate
@@ -13,19 +14,17 @@ from src.schemas.validation_schema import (
     ValidationCreate,
 )
 
-
 # --- Réinitialisation de la DB entre chaque test ---
+
+
 @pytest.fixture(autouse=True)
-def reset_db() -> Generator[None, None, None]:
-    db.learners.clear()
-    db.skills.clear()
-    db.validations.clear()
-    db.trainers.clear()
-    db.current_learner_id = 1
-    db.current_skill_id = 1
-    db.current_validation_id = 1
-    db.current_trainer_id = 1
+async def reset_db() -> AsyncGenerator[None, None]:
+    conn = sqlite3.connect(":memory:", check_same_thread=False)
+    conn.row_factory = sqlite3.Row
+    init_db(conn)
+    set_connection(conn)
     yield
+    conn.close()
 
 
 @pytest.fixture
@@ -112,33 +111,35 @@ async def created_skill(
     return response.json()
 
 
-#
-# @pytest.fixture
-# async def created_validation(
-#     client: AsyncClient,
-#     validation_payload: ValidationCreate,
-#     trainer_headers: dict[str, str],
-# ) -> dict[str, Any]:
-#     response = await client.post(
-#         "/validations", json=validation_payload.model_dump(), headers=trainer_headers
-#     )
-#     return response.json()
-#
-#
-# @pytest.fixture
-# async def created_pre_validation(
-#     client: AsyncClient,
-#     pre_validation_payload: PreValidationCreate,
-#     learner_headers: dict[str, str],
-# ) -> dict[str, Any]:
-#     # setup obligatoire — le validator doit exister et avoir la compétence
-#     validator = Learner(id=2, name="Bob")
-#     validator.add_validated_skill(1)
-#     db.learners.append(validator)
-#
-#     response = await client.post(
-#         "/pre-validations",
-#         json=pre_validation_payload.model_dump(),
-#         headers=learner_headers,
-#     )
-#     return response.json()
+@pytest.fixture
+async def created_validation(
+    client: AsyncClient,
+    validation_payload: ValidationCreate,
+    trainer_headers: dict[str, str],
+) -> dict[str, Any]:
+    response = await client.post(
+        "/validations", json=validation_payload.model_dump(), headers=trainer_headers
+    )
+    return response.json()
+
+
+@pytest.fixture
+async def created_pre_validation(
+    client: AsyncClient,
+    learner_headers: dict[str, str],
+    trainer_headers: dict[str, str],
+) -> dict[str, Any]:
+    # setup : créer le validator avec la compétence validée via les routes
+    await client.post("/apprenants", json={"name": "Bob"}, headers=trainer_headers)
+    await client.post("/competences", json={"name": "Python"}, headers=trainer_headers)
+    await client.post(
+        "/validations",
+        json={"learner_id": 1, "skill_id": 1},
+        headers=trainer_headers,
+    )
+    response = await client.post(
+        "/pre-validations",
+        json={"learner_id": 2, "skill_id": 1, "validator_id": 1},
+        headers=learner_headers,
+    )
+    return response.json()

@@ -1,27 +1,32 @@
-
 import sqlite3
 
 DB_PATH = "skills_manager.db"
 
+_connection: sqlite3.Connection
+
+
 def get_connection() -> sqlite3.Connection:
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
+    global _connection
+    if _connection is None:
+        _connection = sqlite3.connect(DB_PATH, check_same_thread=False)
+        _connection.row_factory = sqlite3.Row
+    return _connection
+
 
 def init_db(conn: sqlite3.Connection) -> None:
     cursor = conn.cursor()
     cursor.executescript("""
         CREATE TABLE IF NOT EXISTS learners (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nom TEXT NOT NULL
+            name TEXT NOT NULL
         );
         CREATE TABLE IF NOT EXISTS trainers (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nom TEXT NOT NULL
+            name TEXT NOT NULL
         );
         CREATE TABLE IF NOT EXISTS skills (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nom TEXT NOT NULL
+            name TEXT NOT NULL
         );
         CREATE TABLE IF NOT EXISTS validations (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,3 +40,8 @@ def init_db(conn: sqlite3.Connection) -> None:
         );
     """)
     conn.commit()
+
+
+def set_connection(conn: sqlite3.Connection) -> None:
+    global _connection
+    _connection = conn
